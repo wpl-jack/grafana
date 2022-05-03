@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { shallow } from 'enzyme';
 import _, { DebouncedFunc } from 'lodash'; // eslint-disable-line lodash/import-scope
 import React from 'react';
@@ -39,6 +39,28 @@ describe('CloudWatchLogsQueryField', () => {
     expect(onRunQuery).toHaveBeenCalled();
   });
 
+  it('loads defaultLogGroups', async () => {
+    const onRunQuery = jest.fn();
+    const ds = setupMockedDataSource();
+    ds.datasource.defaultLogGroups = ['foo'];
+
+    render(
+      <CloudWatchLogsQueryField
+        absoluteRange={{ from: 1, to: 10 }}
+        exploreId={ExploreId.left}
+        datasource={ds.datasource}
+        query={{} as any}
+        onRunQuery={onRunQuery}
+        onChange={() => {}}
+      />
+    );
+
+    await waitFor(() => {
+      // const multiSelect = screen.getByLabelText('Log Groups');
+      expect(screen.getByText('foo')).toBeInTheDocument();
+    });
+  });
+
   it('updates upstream query log groups on region change', async () => {
     const onChange = jest.fn();
     const wrapper = shallow(
@@ -69,6 +91,7 @@ describe('CloudWatchLogsQueryField', () => {
                 return Promise.resolve(['log_group_2']);
               }
             },
+            defaultLogGroups: [],
           } as any
         }
         query={{} as any}
@@ -201,6 +224,7 @@ describe('CloudWatchLogsQueryField', () => {
                 .slice(0, Math.max(params.limit ?? 50, 50));
               return Promise.resolve(theLogGroups);
             },
+            defaultLogGroups: [],
           } as any
         }
         query={{} as any}

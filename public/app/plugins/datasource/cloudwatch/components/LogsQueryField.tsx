@@ -27,6 +27,7 @@ import { CloudWatchLanguageProvider } from '../language_provider';
 import syntax from '../syntax';
 import { CloudWatchJsonData, CloudWatchLogsQuery, CloudWatchQuery } from '../types';
 import { getStatsGroups } from '../utils/query/getStatsGroups';
+import { toOption } from '../utils/utils';
 
 import QueryHeader from './QueryHeader';
 
@@ -66,11 +67,9 @@ interface State {
 
 export class CloudWatchLogsQueryField extends React.PureComponent<CloudWatchLogsQueryFieldProps, State> {
   state: State = {
-    selectedLogGroups:
-      (this.props.query as CloudWatchLogsQuery).logGroupNames?.map((logGroup) => ({
-        value: logGroup,
-        label: logGroup,
-      })) ?? [],
+    selectedLogGroups: (
+      (this.props.query as CloudWatchLogsQuery).logGroupNames ?? this.props.datasource.defaultLogGroups
+    ).map(toOption),
     availableLogGroups: [],
     invalidLogGroups: false,
     loadingLogGroups: false,
@@ -101,11 +100,7 @@ export class CloudWatchLogsQueryField extends React.PureComponent<CloudWatchLogs
         region,
         logGroupNamePrefix,
       });
-
-      return logGroups.map((logGroup) => ({
-        value: logGroup,
-        label: logGroup,
-      }));
+      return logGroups.map(toOption);
     } catch (err) {
       let errMessage = 'unknown error';
       if (typeof err !== 'string') {
@@ -155,8 +150,11 @@ export class CloudWatchLogsQueryField extends React.PureComponent<CloudWatchLogs
   componentDidMount = () => {
     const { query, onChange } = this.props;
 
-    this.setState({
-      loadingLogGroups: true,
+    this.setState((state) => {
+      return {
+        loadingLogGroups: true,
+        selectedLogGroups: state.selectedLogGroups ?? this.props.datasource.defaultLogGroups,
+      };
     });
 
     query.region &&
