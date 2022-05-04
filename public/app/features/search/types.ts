@@ -97,7 +97,7 @@ export type OnMoveItems = (selectedDashboards: DashboardSectionItem[], folder: F
 export enum SearchLayout {
   List = 'list',
   Folders = 'folders',
-  Grid = 'grid', // preview
+  Grid = 'grid', // requires dashboardPreviews feature toggle
 }
 
 export interface SearchQueryParams {
