@@ -49,6 +49,9 @@ const rowGap = css`
   gap: 3px;
 `;
 
+export const MAX_LOG_GROUPS = 20;
+export const MAX_VISIBLE_LOG_GROUPS = 4;
+
 interface State {
   selectedLogGroups: Array<SelectableValue<string>>;
   availableLogGroups: Array<SelectableValue<string>>;
@@ -287,8 +290,6 @@ export class CloudWatchLogsQueryField extends React.PureComponent<CloudWatchLogs
     const showError = data && data.error && data.error.refId === query.refId;
     const cleanText = datasource.languageProvider ? datasource.languageProvider.cleanText : undefined;
 
-    const MAX_LOG_GROUPS = 20;
-
     return (
       <>
         <QueryHeader
@@ -323,7 +324,7 @@ export class CloudWatchLogsQueryField extends React.PureComponent<CloudWatchLogs
                 invalid={invalidLogGroups}
                 isOptionDisabled={() => selectedLogGroups.length >= MAX_LOG_GROUPS}
                 placeholder="Choose Log Groups"
-                maxVisibleValues={4}
+                maxVisibleValues={MAX_VISIBLE_LOG_GROUPS}
                 noOptionsMessage="No log groups available"
                 isLoading={loadingLogGroups}
                 onOpenMenu={this.onOpenLogGroupMenu}
