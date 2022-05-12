@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"sort"
 	"time"
 
 	"github.com/google/go-cmp/cmp"
@@ -130,6 +131,9 @@ type SchedulableAlertRule struct {
 	OrgID           int64  `xorm:"org_id"`
 	IntervalSeconds int64
 	Version         int64
+	NamespaceUID    string `xorm:"namespace_uid"`
+	RuleGroup       string
+	RuleGroupIndex  int `xorm:"rule_group_idx"`
 }
 
 type LabelOption func(map[string]string)
@@ -376,4 +380,15 @@ func PatchPartialAlertRule(existingRule *AlertRule, ruleToPatch *AlertRule) {
 	if ruleToPatch.For == 0 {
 		ruleToPatch.For = existingRule.For
 	}
+}
+
+type RulesGroup []*AlertRule
+
+func (g RulesGroup) SortByGroupIndex() {
+	sort.Slice(g, func(i, j int) bool {
+		if g[i].RuleGroupIndex == g[j].RuleGroupIndex {
+			return g[i].ID < g[j].ID
+		}
+		return g[i].RuleGroupIndex < g[j].RuleGroupIndex
+	})
 }
