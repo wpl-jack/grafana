@@ -120,6 +120,24 @@ func TestFeatureUsageStats(t *testing.T) {
 
 func TestCollectingUsageStats(t *testing.T) {
 	sqlStore := mockstore.NewSQLStoreMock()
+	sqlStore.ExpectedDataSources = []*models.DataSource{
+		{
+			JsonData: simplejson.NewFromAny(map[string]interface{}{
+				"esVersion": "2.0.0",
+			}),
+		},
+		{
+			JsonData: simplejson.NewFromAny(map[string]interface{}{
+				"esVersion": "2.0.0",
+			}),
+		},
+		{
+			JsonData: simplejson.NewFromAny(map[string]interface{}{
+				"esVersion": "70.1.1",
+			}),
+		},
+	}
+
 	s := createService(t, &setting.Cfg{
 		ReportingEnabled:     true,
 		BuildVersion:         "5.0.0",
@@ -129,7 +147,8 @@ func TestCollectingUsageStats(t *testing.T) {
 		AuthProxyEnabled:     true,
 		Packaging:            "deb",
 		ReportingDistributor: "hosted-grafana",
-	}, sqlStore)
+	}, sqlStore,
+		withDatasources(mockDatasourceService{datasources: sqlStore.ExpectedDataSources}))
 
 	s.startTime = time.Now().Add(-1 * time.Minute)
 
@@ -152,24 +171,6 @@ func TestCollectingUsageStats(t *testing.T) {
 		{
 			Type:  "unknown_ds2",
 			Count: 12,
-		},
-	}
-
-	sqlStore.ExpectedDataSources = []*models.DataSource{
-		{
-			JsonData: simplejson.NewFromAny(map[string]interface{}{
-				"esVersion": 2,
-			}),
-		},
-		{
-			JsonData: simplejson.NewFromAny(map[string]interface{}{
-				"esVersion": 2,
-			}),
-		},
-		{
-			JsonData: simplejson.NewFromAny(map[string]interface{}{
-				"esVersion": 70,
-			}),
 		},
 	}
 
@@ -254,6 +255,9 @@ func TestCollectingUsageStats(t *testing.T) {
 
 	assert.EqualValues(t, 9, metrics["stats.ds."+models.DS_ES+".count"])
 	assert.EqualValues(t, 10, metrics["stats.ds."+models.DS_PROMETHEUS+".count"])
+
+	assert.EqualValues(t, 2, metrics["stats.ds."+models.DS_ES+".v2_0_0.count"])
+	assert.EqualValues(t, 1, metrics["stats.ds."+models.DS_ES+".v70_1_1.count"])
 
 	assert.EqualValues(t, 11+12, metrics["stats.ds.other.count"])
 

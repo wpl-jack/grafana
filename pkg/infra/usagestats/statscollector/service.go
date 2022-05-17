@@ -177,18 +177,16 @@ func (s *Service) collect(ctx context.Context) (map[string]interface{}, error) {
 	m["stats.ds.other.count"] = dsOtherCount
 
 	esDataSourcesQuery := models.GetDataSourcesByTypeQuery{Type: models.DS_ES}
-	if err := s.sqlstore.GetDataSourcesByType(ctx, &esDataSourcesQuery); err != nil {
+	if err := s.datasources.GetDataSourcesByType(ctx, &esDataSourcesQuery); err != nil {
 		s.log.Error("Failed to get elasticsearch json data", "error", err)
 		return nil, err
 	}
-
 	for _, data := range esDataSourcesQuery.Result {
-		esVersion, err := data.JsonData.Get("esVersion").Int()
+		esVersion, err := data.JsonData.Get("esVersion").String()
 		if err != nil {
 			continue
 		}
-
-		statName := fmt.Sprintf("stats.ds.elasticsearch.v%d.count", esVersion)
+		statName := fmt.Sprintf("stats.ds.elasticsearch.v%s.count", strings.ReplaceAll(esVersion, ".", "_"))
 
 		count, _ := m[statName].(int64)
 
