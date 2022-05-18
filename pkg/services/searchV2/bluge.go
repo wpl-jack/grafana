@@ -378,11 +378,6 @@ func doSearchQuery(ctx context.Context, logger log.Logger, reader *bluge.Reader,
 		return response
 	}
 
-	dvfieldNames := []string{"type"}
-	sctx := search.NewSearchContext(0, 0)
-
-	// numericFields := map[string]bool{"schemaVersion": true, "panelCount": true}
-
 	fScore := data.NewFieldFromFieldType(data.FieldTypeFloat64, 0)
 	fUID := data.NewFieldFromFieldType(data.FieldTypeString, 0)
 	fKind := data.NewFieldFromFieldType(data.FieldTypeString, 0)
@@ -420,11 +415,6 @@ func doSearchQuery(ctx context.Context, logger log.Logger, reader *bluge.Reader,
 	// iterate through the document matches
 	match, err := documentMatchIterator.Next()
 	for err == nil && match != nil {
-		err = match.LoadDocumentValues(sctx, dvfieldNames)
-		if err != nil {
-			continue
-		}
-
 		uid := ""
 		kind := ""
 		ptype := ""
