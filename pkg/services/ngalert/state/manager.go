@@ -167,7 +167,10 @@ func (st *Manager) ProcessEvalResults(ctx context.Context, alertRule *ngModels.A
 		states = append(states, s)
 		processedResults[s.CacheId] = s
 	}
-	st.staleResultsHandler(ctx, alertRule, processedResults)
+	resolvedStates := st.staleResultsHandler(ctx, alertRule, processedResults)
+	if len(resolvedStates) > 0 {
+		states = append(states, resolvedStates...)
+	}
 	return states
 }
 
@@ -367,7 +370,8 @@ func (st *Manager) annotateState(ctx context.Context, alertRule *ngModels.AlertR
 	}
 }
 
-func (st *Manager) staleResultsHandler(ctx context.Context, alertRule *ngModels.AlertRule, states map[string]*State) {
+func (st *Manager) staleResultsHandler(ctx context.Context, alertRule *ngModels.AlertRule, states map[string]*State) []*State {
+	var resolvedStates []*State
 	allStates := st.GetStatesForRuleUID(alertRule.OrgID, alertRule.UID)
 	for _, s := range allStates {
 		_, ok := states[s.CacheId]
@@ -385,12 +389,21 @@ func (st *Manager) staleResultsHandler(ctx context.Context, alertRule *ngModels.
 			}
 
 			if s.State == eval.Alerting {
+				previousState := InstanceStateAndReason{State: s.State, Reason: s.StateReason}
+				s.State = eval.Normal
+				s.StateReason = ngModels.StateReasonMissingSeries
+				s.EndsAt = time.Now()
+				s.Resolved = true
+				s.LastEvaluationString = ""
 				st.annotateState(ctx, alertRule, s.Labels, time.Now(),
-					InstanceStateAndReason{State: eval.Normal, Reason: ""},
-					InstanceStateAndReason{State: s.State, Reason: s.StateReason})
+					InstanceStateAndReason{State: eval.Normal, Reason: s.StateReason},
+					previousState,
+				)
+				resolvedStates = append(resolvedStates, s)
 			}
 		}
 	}
+	return resolvedStates
 }
 
 func isItStale(lastEval time.Time, intervalSeconds int64) bool {
