@@ -92,6 +92,7 @@ exports[`Render should disable access key id field 1`] = `
       <MultiSelect
         allowCustomValue={true}
         aria-label="Log Groups"
+        inputId="default-log-groups"
         isClearable={true}
         isLoading={false}
         isOptionDisabled={[Function]}
@@ -199,6 +200,7 @@ exports[`Render should render component 1`] = `
       <MultiSelect
         allowCustomValue={true}
         aria-label="Log Groups"
+        inputId="default-log-groups"
         isClearable={true}
         isLoading={false}
         isOptionDisabled={[Function]}
@@ -311,6 +313,7 @@ exports[`Render should show access key and secret access key fields 1`] = `
       <MultiSelect
         allowCustomValue={true}
         aria-label="Log Groups"
+        inputId="default-log-groups"
         isClearable={true}
         isLoading={false}
         isOptionDisabled={[Function]}
@@ -423,6 +426,7 @@ exports[`Render should show arn role field 1`] = `
       <MultiSelect
         allowCustomValue={true}
         aria-label="Log Groups"
+        inputId="default-log-groups"
         isClearable={true}
         isLoading={false}
         isOptionDisabled={[Function]}
@@ -535,6 +539,7 @@ exports[`Render should show credentials profile name field 1`] = `
       <MultiSelect
         allowCustomValue={true}
         aria-label="Log Groups"
+        inputId="default-log-groups"
         isClearable={true}
         isLoading={false}
         isOptionDisabled={[Function]}

@@ -56,7 +56,6 @@ describe('CloudWatchLogsQueryField', () => {
     );
 
     await waitFor(() => {
-      // const multiSelect = screen.getByLabelText('Log Groups');
       expect(screen.getByText('foo')).toBeInTheDocument();
     });
   });
