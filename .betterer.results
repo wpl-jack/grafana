@@ -236,7 +236,7 @@ exports[`no enzyme tests`] = {
     "public/app/plugins/datasource/cloud-monitoring/components/Aggregation.test.tsx:3822406835": [
       [1, 19, 13, "RegExp match", "2409514259"]
     ],
-    "public/app/plugins/datasource/cloudwatch/components/ConfigEditor.test.tsx:4289050475": [
+    "public/app/plugins/datasource/cloudwatch/components/ConfigEditor.test.tsx:299832428": [
       [1, 19, 13, "RegExp match", "2409514259"]
     ],
     "public/app/plugins/datasource/cloudwatch/components/LogsQueryField.test.tsx:1787215731": [
