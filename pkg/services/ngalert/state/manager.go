@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/benbjohnson/clock"
 	"github.com/grafana/grafana-plugin-sdk-go/data"
 
 	"github.com/grafana/grafana/pkg/infra/log"
@@ -36,6 +37,7 @@ type Manager struct {
 	log     log.Logger
 	metrics *metrics.State
 
+	clock       clock.Clock
 	cache       *cache
 	quit        chan struct{}
 	ResendDelay time.Duration
@@ -49,7 +51,7 @@ type Manager struct {
 
 func NewManager(logger log.Logger, metrics *metrics.State, externalURL *url.URL,
 	ruleStore store.RuleStore, instanceStore store.InstanceStore, sqlStore sqlstore.Store,
-	dashboardService dashboards.DashboardService, imageService image.ImageService) *Manager {
+	dashboardService dashboards.DashboardService, imageService image.ImageService, clock clock.Clock) *Manager {
 	manager := &Manager{
 		cache:            newCache(logger, metrics, externalURL),
 		quit:             make(chan struct{}),
@@ -61,6 +63,7 @@ func NewManager(logger log.Logger, metrics *metrics.State, externalURL *url.URL,
 		sqlStore:         sqlStore,
 		dashboardService: dashboardService,
 		imageService:     imageService,
+		clock:            clock,
 	}
 	go manager.recordMetrics()
 	return manager
@@ -277,14 +280,14 @@ func (st *Manager) recordMetrics() {
 	// TODO: parameterize?
 	// Setting to a reasonable default scrape interval for Prometheus.
 	dur := time.Duration(15) * time.Second
-	ticker := time.NewTicker(dur)
+	ticker := st.clock.Ticker(dur)
 	for {
 		select {
 		case <-ticker.C:
-			st.log.Debug("recording state cache metrics", "now", time.Now())
+			st.log.Debug("recording state cache metrics", "now", st.clock.Now())
 			st.cache.recordMetrics()
 		case <-st.quit:
-			st.log.Debug("stopping state cache metrics recording", "now", time.Now())
+			st.log.Debug("stopping state cache metrics recording", "now", st.clock.Now())
 			ticker.Stop()
 			return
 		}
@@ -375,7 +378,7 @@ func (st *Manager) staleResultsHandler(ctx context.Context, alertRule *ngModels.
 	allStates := st.GetStatesForRuleUID(alertRule.OrgID, alertRule.UID)
 	for _, s := range allStates {
 		_, ok := states[s.CacheId]
-		if !ok && isItStale(s.LastEvaluationTime, alertRule.IntervalSeconds) {
+		if !ok && isItStale(st.clock.Now(), s.LastEvaluationTime, alertRule.IntervalSeconds) {
 			st.log.Debug("removing stale state entry", "orgID", s.OrgID, "alertRuleUID", s.AlertRuleUID, "cacheID", s.CacheId)
 			st.cache.deleteEntry(s.OrgID, s.AlertRuleUID, s.CacheId)
 			ilbs := ngModels.InstanceLabels(s.Labels)
@@ -392,11 +395,11 @@ func (st *Manager) staleResultsHandler(ctx context.Context, alertRule *ngModels.
 				previousState := InstanceStateAndReason{State: s.State, Reason: s.StateReason}
 				s.State = eval.Normal
 				s.StateReason = ngModels.StateReasonMissingSeries
-				s.EndsAt = time.Now()
+				s.EndsAt = st.clock.Now()
 				s.Resolved = true
 				s.LastEvaluationString = ""
 				s.Stale = true
-				st.annotateState(ctx, alertRule, s.Labels, time.Now(),
+				st.annotateState(ctx, alertRule, s.Labels, st.clock.Now(),
 					InstanceStateAndReason{State: eval.Normal, Reason: s.StateReason},
 					previousState,
 				)
@@ -407,8 +410,8 @@ func (st *Manager) staleResultsHandler(ctx context.Context, alertRule *ngModels.
 	return resolvedStates
 }
 
-func isItStale(lastEval time.Time, intervalSeconds int64) bool {
-	return lastEval.Add(2 * time.Duration(intervalSeconds) * time.Second).Before(time.Now())
+func isItStale(timeNow time.Time, lastEval time.Time, intervalSeconds int64) bool {
+	return lastEval.Add(2 * time.Duration(intervalSeconds) * time.Second).Before(timeNow)
 }
 
 func removePrivateLabels(labels data.Labels) data.Labels {
