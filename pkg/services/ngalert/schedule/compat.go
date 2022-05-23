@@ -124,6 +124,9 @@ func FromAlertStateToPostableAlerts(firingStates []*state.State, stateManager *s
 		}
 		alert := stateToPostableAlert(alertState, appURL)
 		alerts.PostableAlerts = append(alerts.PostableAlerts, *alert)
+		if alertState.Stale { // do not put stale state back to state manager
+			continue
+		}
 		alertState.LastSentAt = ts
 		sentAlerts = append(sentAlerts, alertState)
 	}

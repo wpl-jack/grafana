@@ -31,6 +31,7 @@ type State struct {
 	EvaluationDuration   time.Duration
 	Results              []Evaluation
 	Resolved             bool
+	Stale                bool
 	Annotations          map[string]string
 	Labels               data.Labels
 	Image                *store.Image
@@ -162,6 +163,9 @@ func (a *State) resultNoData(alertRule *models.AlertRule, result eval.Result) {
 }
 
 func (a *State) NeedsSending(resendDelay time.Duration) bool {
+	if a.Stale {
+		return true
+	}
 	if a.State == eval.Pending || a.State == eval.Normal && !a.Resolved {
 		return false
 	}
