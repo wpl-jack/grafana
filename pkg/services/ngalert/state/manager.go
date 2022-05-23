@@ -395,7 +395,6 @@ func (st *Manager) staleResultsHandler(ctx context.Context, alertRule *ngModels.
 				s.StateReason = ngModels.StateReasonMissingSeries
 				s.EndsAt = st.clock.Now()
 				s.Resolved = true
-				s.LastEvaluationString = ""
 				s.Stale = true
 				s.LastEvaluationString = ""
 				st.annotateState(ctx, alertRule, s.Labels, st.clock.Now(),
