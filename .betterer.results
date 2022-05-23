@@ -1,5 +1,5 @@
 // BETTERER RESULTS V2.
-//
+// 
 // If this file contains merge conflicts, use `betterer merge` to automatically resolve them:
 // https://phenomnomnominal.github.io/betterer/docs/results-file/#merge
 //
@@ -41,7 +41,7 @@ exports[`no enzyme tests`] = {
     "packages/grafana-ui/src/slate-plugins/runner.test.tsx:446043290": [
       [0, 19, 13, "RegExp match", "2409514259"]
     ],
-    "packages/grafana-ui/src/slate-plugins/suggestions.test.tsx:3654981205": [
+    "packages/grafana-ui/src/slate-plugins/suggestions.test.tsx:3811511241": [
       [0, 18, 13, "RegExp match", "2409514259"]
     ],
     "packages/jaeger-ui-components/src/TracePageHeader/SpanGraph/CanvasSpanGraph.test.js:1974748555": [
@@ -236,10 +236,7 @@ exports[`no enzyme tests`] = {
     "public/app/plugins/datasource/cloud-monitoring/components/Aggregation.test.tsx:3822406835": [
       [1, 19, 13, "RegExp match", "2409514259"]
     ],
-    "public/app/plugins/datasource/cloudwatch/components/ConfigEditor.test.tsx:4293633185": [
-      [1, 19, 13, "RegExp match", "2409514259"]
-    ],
-    "public/app/plugins/datasource/cloudwatch/components/LogsQueryField.test.tsx:2780918534": [
+    "public/app/plugins/datasource/cloudwatch/components/ConfigEditor.test.tsx:159449659": [
       [1, 19, 13, "RegExp match", "2409514259"]
     ],
     "public/app/plugins/datasource/elasticsearch/configuration/ConfigEditor.test.tsx:3481855642": [
