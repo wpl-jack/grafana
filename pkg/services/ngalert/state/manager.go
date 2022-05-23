@@ -49,9 +49,7 @@ type Manager struct {
 	imageService     image.ImageService
 }
 
-func NewManager(logger log.Logger, metrics *metrics.State, externalURL *url.URL,
-	ruleStore store.RuleStore, instanceStore store.InstanceStore, sqlStore sqlstore.Store,
-	dashboardService dashboards.DashboardService, imageService image.ImageService, clock clock.Clock) *Manager {
+func NewManager(logger log.Logger, metrics *metrics.State, clock clock.Clock, externalURL *url.URL, ruleStore store.RuleStore, instanceStore store.InstanceStore, sqlStore sqlstore.Store, dashboardService dashboards.DashboardService, imageService image.ImageService) *Manager {
 	manager := &Manager{
 		cache:            newCache(logger, metrics, externalURL),
 		quit:             make(chan struct{}),
@@ -411,8 +409,8 @@ func (st *Manager) staleResultsHandler(ctx context.Context, alertRule *ngModels.
 	return resolvedStates
 }
 
-func isItStale(timeNow time.Time, lastEval time.Time, intervalSeconds int64) bool {
-	return lastEval.Add(2 * time.Duration(intervalSeconds) * time.Second).Before(timeNow)
+func isItStale(now time.Time, lastEval time.Time, intervalSeconds int64) bool {
+	return lastEval.Add(2 * time.Duration(intervalSeconds) * time.Second).Before(now)
 }
 
 func removePrivateLabels(labels data.Labels) data.Labels {

@@ -39,7 +39,7 @@ func TestDashboardAnnotations(t *testing.T) {
 	_, dbstore := tests.SetupTestEnv(t, 1)
 
 	sqlStore := mockstore.NewSQLStoreMock()
-	st := state.NewManager(log.New("test_stale_results_handler"), testMetrics.GetStateMetrics(), nil, dbstore, dbstore, sqlStore, &dashboards.FakeDashboardService{}, &image.NoopImageService{}, clock.New())
+	st := state.NewManager(log.New("test_stale_results_handler"), testMetrics.GetStateMetrics(), clock.New(), nil, dbstore, dbstore, sqlStore, &dashboards.FakeDashboardService{}, &image.NoopImageService{})
 
 	fakeAnnoRepo := store.NewFakeAnnotationsRepo()
 	annotations.SetRepository(fakeAnnoRepo)
@@ -1781,7 +1781,7 @@ func TestProcessEvalResults(t *testing.T) {
 
 	for _, tc := range testCases {
 		ss := mockstore.NewSQLStoreMock()
-		st := state.NewManager(log.New("test_state_manager"), testMetrics.GetStateMetrics(), nil, nil, &store.FakeInstanceStore{}, ss, &dashboards.FakeDashboardService{}, &image.NotAvailableImageService{}, clock.New())
+		st := state.NewManager(log.New("test_state_manager"), testMetrics.GetStateMetrics(), clock.New(), nil, nil, &store.FakeInstanceStore{}, ss, &dashboards.FakeDashboardService{}, &image.NotAvailableImageService{})
 		t.Run(tc.desc, func(t *testing.T) {
 			fakeAnnoRepo := store.NewFakeAnnotationsRepo()
 			annotations.SetRepository(fakeAnnoRepo)
@@ -1902,7 +1902,7 @@ func TestStaleResultsHandler(t *testing.T) {
 	for _, tc := range testCases {
 		ctx := context.Background()
 		sqlStore := mockstore.NewSQLStoreMock()
-		st := state.NewManager(log.New("test_stale_results_handler"), testMetrics.GetStateMetrics(), nil, dbstore, dbstore, sqlStore, &dashboards.FakeDashboardService{}, &image.NoopImageService{}, clock.New())
+		st := state.NewManager(log.New("test_stale_results_handler"), testMetrics.GetStateMetrics(), clock.New(), nil, dbstore, dbstore, sqlStore, &dashboards.FakeDashboardService{}, &image.NoopImageService{})
 		st.Warm(ctx)
 		existingStatesForRule := st.GetStatesForRuleUID(rule.OrgID, rule.UID)
 
@@ -1959,7 +1959,7 @@ func TestStaleResults(t *testing.T) {
 		clk := clock.NewMock()
 		clk.Set(time.Now())
 
-		st := state.NewManager(log.New("test_stale_results_handler"), testMetrics.GetStateMetrics(), nil, dbstore, dbstore, sqlStore, &dashboards.FakeDashboardService{}, &image.NoopImageService{}, clk)
+		st := state.NewManager(log.New("test_stale_results_handler"), testMetrics.GetStateMetrics(), clk, nil, dbstore, dbstore, sqlStore, &dashboards.FakeDashboardService{}, &image.NoopImageService{})
 
 		orgID := rand.Int63()
 		rule := tests.CreateTestAlertRule(t, ctx, dbstore, 10, orgID)

@@ -92,9 +92,7 @@ func Test_maybeNewImage(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.description, func(t *testing.T) {
 			imageService := &CountingImageService{}
-			mgr := NewManager(log.NewNopLogger(), &metrics.State{}, nil,
-				&store.FakeRuleStore{}, &store.FakeInstanceStore{}, mockstore.NewSQLStoreMock(),
-				&dashboards.FakeDashboardService{}, imageService, clock.NewMock())
+			mgr := NewManager(log.NewNopLogger(), &metrics.State{}, clock.NewMock(), nil, &store.FakeRuleStore{}, &store.FakeInstanceStore{}, mockstore.NewSQLStoreMock(), &dashboards.FakeDashboardService{}, imageService)
 			err := mgr.maybeTakeScreenshot(context.Background(), &ngmodels.AlertRule{}, test.state, test.oldState)
 			require.NoError(t, err)
 			if !test.shouldScreenshot {
