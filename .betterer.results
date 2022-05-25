@@ -41,7 +41,7 @@ exports[`no enzyme tests`] = {
     "packages/grafana-ui/src/slate-plugins/runner.test.tsx:446043290": [
       [0, 19, 13, "RegExp match", "2409514259"]
     ],
-    "packages/grafana-ui/src/slate-plugins/suggestions.test.tsx:3811511241": [
+    "packages/grafana-ui/src/slate-plugins/suggestions.test.tsx:3654981205": [
       [0, 18, 13, "RegExp match", "2409514259"]
     ],
     "packages/jaeger-ui-components/src/TracePageHeader/SpanGraph/CanvasSpanGraph.test.js:1974748555": [
