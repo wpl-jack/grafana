@@ -41,7 +41,6 @@ export const LogGroupSelector: React.FC<LogGroupSelectorProps> = ({
   width,
   saved = true,
 }) => {
-  const [invalid, setInvalid] = useState(false);
   const [loadingLogGroups, setLoadingLogGroups] = useState(false);
   const [availableLogGroups, setAvailableLogGroups] = useState<Array<SelectableValue<string>>>([]);
   const logGroupOptions = useMemo(
@@ -134,7 +133,6 @@ export const LogGroupSelector: React.FC<LogGroupSelectorProps> = ({
     if (onOpenMenu) {
       await onOpenMenu();
     }
-    setInvalid(false);
   };
 
   const onLogGroupSearchDebounced = debounce(onLogGroupSearch, DEBOUNCE_TIMER);
@@ -150,7 +148,6 @@ export const LogGroupSelector: React.FC<LogGroupSelectorProps> = ({
       onBlur={onRunQuery}
       closeMenuOnSelect={false}
       isClearable
-      invalid={invalid}
       isOptionDisabled={() => selectedLogGroups.length >= MAX_LOG_GROUPS}
       placeholder="Choose Log Groups"
       maxVisibleValues={MAX_VISIBLE_LOG_GROUPS}
