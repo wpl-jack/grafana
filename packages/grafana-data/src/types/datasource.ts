@@ -529,6 +529,10 @@ export interface DataSourceJsonData {
   alertmanagerUid?: string;
 }
 
+export interface Correlation {
+  target: DataSourceRef;
+}
+
 /**
  * Data Source instance edit model.  This is returned from:
  *  /api/datasources
@@ -549,6 +553,7 @@ export interface DataSourceSettings<T extends DataSourceJsonData = DataSourceJso
   basicAuth: boolean;
   basicAuthUser: string;
   isDefault: boolean;
+  correlations: Correlation[];
   jsonData: T;
   secureJsonData?: S;
   secureJsonFields: KeyValue<boolean>;
@@ -569,6 +574,7 @@ export interface DataSourceInstanceSettings<T extends DataSourceJsonData = DataS
   name: string;
   meta: DataSourcePluginMeta;
   url?: string;
+  correlations: Correlation[];
   jsonData: T;
   username?: string;
   password?: string; // when access is direct, for some legacy datasources

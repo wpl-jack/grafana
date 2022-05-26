@@ -244,6 +244,14 @@ func (hs *HTTPServer) getNavTree(c *models.ReqContext, hasEditPerm bool, prefs *
 			Id:          "datasources",
 			Url:         hs.Cfg.AppSubURL + "/datasources",
 		})
+
+		configNodes = append(configNodes, &dtos.NavLink{
+			Text:        "Correlations",
+			Icon:        "sitemap",
+			Description: "Configure data sources correlations",
+			Id:          "correlations",
+			Url:         hs.Cfg.AppSubURL + "/datasources/correlations",
+		})
 	}
 
 	if hasAccess(ac.ReqOrgAdmin, ac.EvalPermission(ac.ActionOrgUsersRead)) {

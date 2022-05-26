@@ -248,6 +248,12 @@ func (hs *HTTPServer) getFSDataSources(c *models.ReqContext, enabledPlugins Enab
 			dsDTO.JSONData = ds.JsonData.MustMap()
 		}
 
+		if ds.Correlations == nil {
+			dsDTO.Correlations = make([]interface{}, 0)
+		} else {
+			dsDTO.Correlations = ds.Correlations.MustArray()
+		}
+
 		if ds.Access == models.DS_ACCESS_DIRECT {
 			if ds.BasicAuth {
 				password, err := hs.DataSourcesService.DecryptedBasicAuthPassword(c.Req.Context(), ds)
@@ -304,9 +310,10 @@ func (hs *HTTPServer) getFSDataSources(c *models.ReqContext, enabledPlugins Enab
 	for _, ds := range hs.pluginStore.Plugins(c.Req.Context(), plugins.DataSource) {
 		if ds.BuiltIn {
 			dto := plugins.DataSourceDTO{
-				Type:     string(ds.Type),
-				Name:     ds.Name,
-				JSONData: make(map[string]interface{}),
+				Type:         string(ds.Type),
+				Name:         ds.Name,
+				JSONData:     make(map[string]interface{}),
+				Correlations: make([]interface{}, 0),
 				PluginMeta: &plugins.PluginMetaDTO{
 					JSONData:  ds.JSONData,
 					Signature: ds.Signature,
