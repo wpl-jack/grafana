@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"math/rand"
 	"net/http"
 	"testing"
@@ -656,6 +657,49 @@ func TestRouteGetNamespaceRulesConfig(t *testing.T) {
 			}
 		}
 		require.True(t, found)
+	})
+	t.Run("should enforce order of rules in the group", func(t *testing.T) {
+		orgID := rand.Int63()
+		folder := randFolder()
+		ruleStore := store.NewFakeRuleStore(t)
+		ruleStore.Folders[orgID] = append(ruleStore.Folders[orgID], folder)
+		groupKey := models.GenerateGroupKey(orgID)
+		groupKey.NamespaceUID = folder.Uid
+
+		expectedRules := models.GenerateAlertRules(rand.Intn(5)+5, models.AlertRuleGen(withGroupKey(groupKey), models.WithUniqueGroupIndex()))
+		ruleStore.PutRule(context.Background(), expectedRules...)
+		ac := acMock.New().WithDisabled()
+
+		response := createService(ac, ruleStore, nil).RouteGetNamespaceRulesConfig(createRequestContext(orgID, models2.ROLE_VIEWER, map[string]string{
+			":Namespace": folder.Title,
+		}))
+
+		require.Equal(t, http.StatusAccepted, response.Status())
+		result := &apimodels.NamespaceConfigResponse{}
+		require.NoError(t, json.Unmarshal(response.Body(), result))
+		require.NotNil(t, result)
+
+		models.RulesGroup(expectedRules).SortByGroupIndex()
+
+		require.Contains(t, *result, folder.Title)
+		groups := (*result)[folder.Title]
+		require.Len(t, groups, 1)
+		group := groups[0]
+		require.Equal(t, groupKey.RuleGroup, group.Name)
+		for i, actual := range groups[0].Rules {
+			expected := expectedRules[i]
+			if actual.GrafanaManagedAlert.UID != expected.UID {
+				var actualUIDs []string
+				var expectedUIDs []string
+				for _, rule := range group.Rules {
+					actualUIDs = append(actualUIDs, rule.GrafanaManagedAlert.UID)
+				}
+				for _, rule := range expectedRules {
+					expectedUIDs = append(expectedUIDs, rule.UID)
+				}
+				require.Fail(t, fmt.Sprintf("rules are not sorted by group index. Expected: %v. Actual: %v", expectedUIDs, actualUIDs))
+			}
+		}
 	})
 }
 
