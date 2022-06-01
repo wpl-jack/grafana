@@ -26,7 +26,8 @@ const (
 	alertmanagerDefaultConfiguration = `{
 	"alertmanager_config": {
 		"route": {
-			"receiver": "grafana-default-email"
+			"receiver": "grafana-default-email",
+			"group_by": ["g_folder", "alertname"]
 		},
 		"receivers": [{
 			"name": "grafana-default-email",

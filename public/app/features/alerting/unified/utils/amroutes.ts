@@ -59,9 +59,19 @@ export const emptyArrayFieldMatcher: MatcherFieldValue = {
   operator: MatcherOperator.equal,
 };
 
+// Default route group_by labels for newly created routes.
+export const defaultGroupBy = ['g_folder', 'alertname'];
+
+// Common route group_by options for multiselect drop-down
+export const commonGroupByOptions = [
+  { label: 'g_folder', value: 'g_folder' },
+  { label: 'alertname', value: 'alertname' },
+  { label: 'Disable (...)', value: '...' },
+];
+
 export const emptyRoute: FormAmRoute = {
   id: '',
-  groupBy: [],
+  groupBy: defaultGroupBy,
   object_matchers: [],
   routes: [],
   continue: false,

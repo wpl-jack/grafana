@@ -85,6 +85,10 @@ const (
 	// This isn't a hard-coded secret token, hence the nolint.
 	//nolint:gosec
 	ScreenshotTokenAnnotation = "__alertScreenshotToken__"
+
+	// These labels are Grafana controlled and non-overrideable. However, they are not the same as internal labels as
+	// they are meeant to be visible and passed-through to AMs. Should always be prefixed with "g_".
+	FolderUIDLabel = "g_folder"
 )
 
 var (

@@ -95,8 +95,10 @@ func (c *cache) getOrCreate(ctx context.Context, alertRule *ngModels.AlertRule, 
 
 func attachRuleLabels(m map[string]string, alertRule *ngModels.AlertRule) {
 	m[ngModels.RuleUIDLabel] = alertRule.UID
-	m[ngModels.NamespaceUIDLabel] = alertRule.NamespaceUID
+	m[ngModels.NamespaceUIDLabel] = alertRule.NamespaceUID // TODO: Does this do anything? If not, let's remove.
 	m[prometheusModel.AlertNameLabel] = alertRule.Title
+
+	m[ngModels.FolderUIDLabel] = alertRule.NamespaceUID
 }
 
 func (c *cache) expandRuleLabelsAndAnnotations(ctx context.Context, alertRule *ngModels.AlertRule, labels map[string]string, alertInstance eval.Result) (map[string]string, map[string]string) {
