@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"math/rand"
 	"net/http"
+	"net/url"
 	"testing"
 	"time"
 
@@ -703,6 +704,92 @@ func TestRouteGetNamespaceRulesConfig(t *testing.T) {
 	})
 }
 
+func TestRouteGetRulesConfig(t *testing.T) {
+	t.Run("should return rules in group sorted by group index", func(t *testing.T) {
+		orgID := rand.Int63()
+		folder := randFolder()
+		ruleStore := store.NewFakeRuleStore(t)
+		ruleStore.Folders[orgID] = append(ruleStore.Folders[orgID], folder)
+		groupKey := models.GenerateGroupKey(orgID)
+		groupKey.NamespaceUID = folder.Uid
+
+		expectedRules := models.GenerateAlertRules(rand.Intn(5)+5, models.AlertRuleGen(withGroupKey(groupKey), models.WithUniqueGroupIndex()))
+		ruleStore.PutRule(context.Background(), expectedRules...)
+		ac := acMock.New().WithDisabled()
+
+		response := createService(ac, ruleStore, nil).RouteGetRulesConfig(createRequestContext(orgID, models2.ROLE_VIEWER, nil))
+
+		require.Equal(t, http.StatusOK, response.Status())
+		result := &apimodels.NamespaceConfigResponse{}
+		require.NoError(t, json.Unmarshal(response.Body(), result))
+		require.NotNil(t, result)
+
+		models.RulesGroup(expectedRules).SortByGroupIndex()
+
+		require.Contains(t, *result, folder.Title)
+		groups := (*result)[folder.Title]
+		require.Len(t, groups, 1)
+		group := groups[0]
+		require.Equal(t, groupKey.RuleGroup, group.Name)
+		for i, actual := range groups[0].Rules {
+			expected := expectedRules[i]
+			if actual.GrafanaManagedAlert.UID != expected.UID {
+				var actualUIDs []string
+				var expectedUIDs []string
+				for _, rule := range group.Rules {
+					actualUIDs = append(actualUIDs, rule.GrafanaManagedAlert.UID)
+				}
+				for _, rule := range expectedRules {
+					expectedUIDs = append(expectedUIDs, rule.UID)
+				}
+				require.Fail(t, fmt.Sprintf("rules are not sorted by group index. Expected: %v. Actual: %v", expectedUIDs, actualUIDs))
+			}
+		}
+	})
+}
+
+func TestRouteGetRulesGroupConfig(t *testing.T) {
+	t.Run("should return rules in group sorted by group index", func(t *testing.T) {
+		orgID := rand.Int63()
+		folder := randFolder()
+		ruleStore := store.NewFakeRuleStore(t)
+		ruleStore.Folders[orgID] = append(ruleStore.Folders[orgID], folder)
+		groupKey := models.GenerateGroupKey(orgID)
+		groupKey.NamespaceUID = folder.Uid
+
+		expectedRules := models.GenerateAlertRules(rand.Intn(5)+5, models.AlertRuleGen(withGroupKey(groupKey), models.WithUniqueGroupIndex()))
+		ruleStore.PutRule(context.Background(), expectedRules...)
+		ac := acMock.New().WithDisabled()
+
+		response := createService(ac, ruleStore, nil).RouteGetRulesGroupConfig(createRequestContext(orgID, models2.ROLE_VIEWER, map[string]string{
+			":Namespace": folder.Title,
+			":Groupname": groupKey.RuleGroup,
+		}))
+
+		require.Equal(t, http.StatusAccepted, response.Status())
+		result := &apimodels.RuleGroupConfigResponse{}
+		require.NoError(t, json.Unmarshal(response.Body(), result))
+		require.NotNil(t, result)
+
+		models.RulesGroup(expectedRules).SortByGroupIndex()
+
+		for i, actual := range result.Rules {
+			expected := expectedRules[i]
+			if actual.GrafanaManagedAlert.UID != expected.UID {
+				var actualUIDs []string
+				var expectedUIDs []string
+				for _, rule := range result.Rules {
+					actualUIDs = append(actualUIDs, rule.GrafanaManagedAlert.UID)
+				}
+				for _, rule := range expectedRules {
+					expectedUIDs = append(expectedUIDs, rule.UID)
+				}
+				require.Fail(t, fmt.Sprintf("rules are not sorted by group index. Expected: %v. Actual: %v", expectedUIDs, actualUIDs))
+			}
+		}
+	})
+}
+
 func createService(ac *acMock.Mock, store *store.FakeRuleStore, scheduler schedule.ScheduleService) *RulerSrv {
 	return &RulerSrv{
 		xactManager:     store,
@@ -718,7 +805,10 @@ func createService(ac *acMock.Mock, store *store.FakeRuleStore, scheduler schedu
 }
 
 func createRequestContext(orgID int64, role models2.RoleType, params map[string]string) *models2.ReqContext {
-	ctx := web.Context{Req: &http.Request{}}
+	uri, _ := url.Parse("http://localhost")
+	ctx := web.Context{Req: &http.Request{
+		URL: uri,
+	}}
 	ctx.Req = web.SetURLParams(ctx.Req, params)
 
 	return &models2.ReqContext{
