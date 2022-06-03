@@ -91,6 +91,8 @@ func (*OSSMigrations) AddMigration(mg *Migrator) {
 	accesscontrol.AddManagedPermissionsMigration(mg)
 	accesscontrol.AddManagedFolderAlertActionsMigration(mg)
 	accesscontrol.AddActionNameMigrator(mg)
+
+	ualert.UpdateRuleGroupIndexMigration(mg)
 }
 
 func addMigrationLogMigrations(mg *Migrator) {
