@@ -394,7 +394,7 @@ func (srv RulerSrv) updateAlertRulesInGroup(c *models.ReqContext, groupKey ngmod
 				"allowed", len(groupChanges.Update))
 		}
 
-		logger.Debug("updating database with the authorized changes", "add", len(finalChanges.New), "update", len(finalChanges.New), "delete", len(finalChanges.Delete))
+		logger.Debug("updating database with the authorized changes", "add", len(finalChanges.New), "update", len(finalChanges.Update), "delete", len(finalChanges.Delete))
 
 		if len(finalChanges.Update) > 0 || len(finalChanges.New) > 0 {
 			updates := make([]store.UpdateRule, 0, len(finalChanges.Update))
