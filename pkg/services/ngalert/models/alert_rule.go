@@ -241,6 +241,7 @@ type AlertRuleVersion struct {
 	RuleUID          string `xorm:"rule_uid"`
 	RuleNamespaceUID string `xorm:"rule_namespace_uid"`
 	RuleGroup        string
+	RuleGroupIndex   int `xorm:"rule_group_idx"`
 	ParentVersion    int64
 	RestoredFrom     int64
 	Version          int64

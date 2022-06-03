@@ -228,6 +228,7 @@ func (st DBstore) UpdateAlertRules(ctx context.Context, rules []UpdateRule) erro
 				RuleUID:          r.New.UID,
 				RuleNamespaceUID: r.New.NamespaceUID,
 				RuleGroup:        r.New.RuleGroup,
+				RuleGroupIndex:   r.New.RuleGroupIndex,
 				ParentVersion:    parentVersion,
 				Version:          r.New.Version,
 				Created:          r.New.Updated,
