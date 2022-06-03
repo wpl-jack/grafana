@@ -705,6 +705,44 @@ func TestRouteGetNamespaceRulesConfig(t *testing.T) {
 }
 
 func TestRouteGetRulesConfig(t *testing.T) {
+	t.Run("fine-grained access is enabled", func(t *testing.T) {
+		t.Run("should check access to data source", func(t *testing.T) {
+			orgID := rand.Int63()
+			ruleStore := store.NewFakeRuleStore(t)
+			folder1 := randFolder()
+			folder2 := randFolder()
+			ruleStore.Folders[orgID] = []*models2.Folder{folder1, folder2}
+
+			group1Key := models.GenerateGroupKey(orgID)
+			group1Key.NamespaceUID = folder1.Uid
+			group2Key := models.GenerateGroupKey(orgID)
+			group2Key.NamespaceUID = folder2.Uid
+
+			group1 := models.GenerateAlertRules(rand.Intn(4)+2, models.AlertRuleGen(withGroupKey(group1Key)))
+			group2 := models.GenerateAlertRules(rand.Intn(4)+2, models.AlertRuleGen(withGroupKey(group2Key)))
+			ruleStore.PutRule(context.Background(), append(group1, group2...)...)
+
+			request := createRequestContext(orgID, "", nil)
+			t.Run("and do not return group if user does not have access to one of rules", func(t *testing.T) {
+				ac := acMock.New().WithPermissions(createPermissionsForRules(append(group1, group2[1:]...)))
+				response := createService(ac, ruleStore, nil).RouteGetRulesConfig(request)
+				require.Equal(t, http.StatusOK, response.Status())
+
+				result := &apimodels.NamespaceConfigResponse{}
+				require.NoError(t, json.Unmarshal(response.Body(), result))
+				require.NotNil(t, result)
+
+				require.Contains(t, *result, folder1.Title)
+				require.NotContains(t, *result, folder2.Title)
+
+				groups := (*result)[folder1.Title]
+				require.Len(t, groups, 1)
+				require.Equal(t, group1Key.RuleGroup, groups[0].Name)
+				require.Len(t, groups[0].Rules, len(group1))
+			})
+		})
+	})
+
 	t.Run("should return rules in group sorted by group index", func(t *testing.T) {
 		orgID := rand.Int63()
 		folder := randFolder()
@@ -749,6 +787,42 @@ func TestRouteGetRulesConfig(t *testing.T) {
 }
 
 func TestRouteGetRulesGroupConfig(t *testing.T) {
+	t.Run("fine-grained access is enabled", func(t *testing.T) {
+		t.Run("should check access to data source", func(t *testing.T) {
+			orgID := rand.Int63()
+			folder := randFolder()
+			ruleStore := store.NewFakeRuleStore(t)
+			ruleStore.Folders[orgID] = append(ruleStore.Folders[orgID], folder)
+			groupKey := models.GenerateGroupKey(orgID)
+			groupKey.NamespaceUID = folder.Uid
+
+			expectedRules := models.GenerateAlertRules(rand.Intn(4)+2, models.AlertRuleGen(withGroupKey(groupKey)))
+			ruleStore.PutRule(context.Background(), expectedRules...)
+
+			request := createRequestContext(orgID, "", map[string]string{
+				":Namespace": folder.Title,
+				":Groupname": groupKey.RuleGroup,
+			})
+
+			t.Run("and return 401 if user does not have access one of rules", func(t *testing.T) {
+				ac := acMock.New().WithPermissions(createPermissionsForRules(expectedRules[1:]))
+				response := createService(ac, ruleStore, nil).RouteGetRulesGroupConfig(request)
+				require.Equal(t, http.StatusUnauthorized, response.Status())
+			})
+
+			t.Run("and return rules if user has access to all of them", func(t *testing.T) {
+				ac := acMock.New().WithPermissions(createPermissionsForRules(expectedRules))
+				response := createService(ac, ruleStore, nil).RouteGetRulesGroupConfig(request)
+
+				require.Equal(t, http.StatusAccepted, response.Status())
+				result := &apimodels.RuleGroupConfigResponse{}
+				require.NoError(t, json.Unmarshal(response.Body(), result))
+				require.NotNil(t, result)
+				require.Len(t, result.Rules, len(expectedRules))
+			})
+		})
+	})
+
 	t.Run("should return rules in group sorted by group index", func(t *testing.T) {
 		orgID := rand.Int63()
 		folder := randFolder()
