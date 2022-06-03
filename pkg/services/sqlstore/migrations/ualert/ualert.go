@@ -38,6 +38,7 @@ var migTitle = "move dashboard alerts to unified alerting"
 var rmMigTitle = "remove unified alerting data"
 
 const clearMigrationEntryTitle = "clear migration entry %q"
+const codeMigration = "code migration"
 
 type MigrationError struct {
 	AlertId int64
@@ -221,7 +222,7 @@ type migration struct {
 }
 
 func (m *migration) SQL(dialect migrator.Dialect) string {
-	return "code migration"
+	return codeMigration
 }
 
 // nolint: gocyclo
@@ -505,7 +506,7 @@ type rmMigration struct {
 }
 
 func (m *rmMigration) SQL(dialect migrator.Dialect) string {
-	return "code migration"
+	return codeMigration
 }
 
 func (m *rmMigration) Exec(sess *xorm.Session, mg *migrator.Migrator) error {
@@ -704,7 +705,7 @@ func (u *upgradeNgAlerting) updateAlertmanagerFiles(orgId int64, migrator *migra
 }
 
 func (u *upgradeNgAlerting) SQL(migrator.Dialect) string {
-	return "code migration"
+	return codeMigration
 }
 
 // getAlertFolderNameFromDashboard generates a folder name for alerts that belong to a dashboard. Formats the string according to DASHBOARD_FOLDER format.
@@ -770,7 +771,7 @@ func (c createDefaultFoldersForAlertingMigration) Exec(sess *xorm.Session, migra
 }
 
 func (c createDefaultFoldersForAlertingMigration) SQL(migrator.Dialect) string {
-	return "code migration"
+	return codeMigration
 }
 
 // UpdateRuleGroupIndexMigration updates a new field rule_group_index for alert rules that belong to a group with more than 1 alert.
@@ -786,7 +787,7 @@ type updateRulesOrderInGroup struct {
 }
 
 func (c updateRulesOrderInGroup) SQL(migrator.Dialect) string {
-	return "code migration"
+	return codeMigration
 }
 
 func (c updateRulesOrderInGroup) Exec(sess *xorm.Session, migrator *migrator.Migrator) error {
