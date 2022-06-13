@@ -3221,6 +3221,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.18.3":
+  version: 7.18.3
+  resolution: "@babel/runtime@npm:7.18.3"
+  dependencies:
+    regenerator-runtime: ^0.13.4
+  checksum: db8526226aa02cfa35a5a7ac1a34b5f303c62a1f000c7db48cb06c6290e616483e5036ab3c4e7a84d0f3be6d4e2148d5fe5cec9564bf955f505c3e764b83d7f1
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.12.7, @babel/template@npm:^7.16.7":
   version: 7.16.7
   resolution: "@babel/template@npm:7.16.7"
@@ -4769,7 +4778,7 @@ __metadata:
     raw-loader: 4.0.2
     rc-cascader: 3.5.0
     rc-drawer: 4.4.3
-    rc-slider: 9.7.5
+    rc-slider: 10.0.0
     rc-time-picker: ^3.7.3
     react: 17.0.2
     react-beautiful-dnd: 13.1.0
@@ -20932,7 +20941,7 @@ __metadata:
     raw-loader: 4.0.2
     rc-cascader: 3.5.0
     rc-drawer: 4.4.3
-    rc-slider: 9.7.5
+    rc-slider: 10.0.0
     rc-time-picker: 3.7.3
     re-resizable: 6.9.9
     react: 17.0.2
@@ -30201,19 +30210,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rc-slider@npm:9.7.5":
-  version: 9.7.5
-  resolution: "rc-slider@npm:9.7.5"
+"rc-slider@npm:10.0.0":
+  version: 10.0.0
+  resolution: "rc-slider@npm:10.0.0"
   dependencies:
     "@babel/runtime": ^7.10.1
     classnames: ^2.2.5
     rc-tooltip: ^5.0.1
-    rc-util: ^5.16.1
+    rc-util: ^5.18.1
     shallowequal: ^1.1.0
   peerDependencies:
     react: ">=16.9.0"
     react-dom: ">=16.9.0"
-  checksum: e5b7b8e6036ea51d88e40c11c46e9c1639f5133fd1a6b5353c87547b1bc92393a291f9d0772a0465d1d139c9dbd14a349838861df86d33b1abb6a94593e7b17e
+  checksum: 33c7839280ddd5bf54fdd4e2fb482e0ae02b125721c0e00e3e11e55b5740d46a7779bb4ad8101a35c32ac6da19628b6f4d746324fd63f6ff414e48bd9cd7a1bb
   languageName: node
   linkType: hard
 
@@ -30315,6 +30324,20 @@ __metadata:
     react: ">=16.9.0"
     react-dom: ">=16.9.0"
   checksum: f2a6fd262d91d0b2ee1d84853c5ab212c9138b535ce5df8fa807fad4d8772539cbf0fee8cf7044ce9d47d8847950dfa5ae2f884c40eda9b0e9879050e4d549ec
+  languageName: node
+  linkType: hard
+
+"rc-util@npm:^5.18.1":
+  version: 5.21.5
+  resolution: "rc-util@npm:5.21.5"
+  dependencies:
+    "@babel/runtime": ^7.18.3
+    react-is: ^16.12.0
+    shallowequal: ^1.1.0
+  peerDependencies:
+    react: ">=16.9.0"
+    react-dom: ">=16.9.0"
+  checksum: 39434002f228381b6a6dbb135a1c099b2e5c5f63aba4616cee1ed9b1436cdc8011d78055b06cc169d44b1a79c42d40ecd3d2f6123a61043510aa2a9de48e0e72
   languageName: node
   linkType: hard
 
