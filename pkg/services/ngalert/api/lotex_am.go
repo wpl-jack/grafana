@@ -140,12 +140,12 @@ func (am *LotexAM) RouteDeleteAlertingConfig(ctx *models.ReqContext) response.Re
 	)
 }
 
-func (am *LotexAM) RouteDeleteSilence(ctx *models.ReqContext) response.Response {
+func (am *LotexAM) RouteDeleteSilence(ctx *models.ReqContext, silenceID string) response.Response {
 	return am.withAMReq(
 		ctx,
 		http.MethodDelete,
 		"silence",
-		[]string{web.Params(ctx.Req)[":SilenceId"]},
+		[]string{silenceID},
 		nil,
 		messageExtractor,
 		nil,
@@ -188,12 +188,12 @@ func (am *LotexAM) RouteGetAMAlerts(ctx *models.ReqContext) response.Response {
 	)
 }
 
-func (am *LotexAM) RouteGetSilence(ctx *models.ReqContext) response.Response {
+func (am *LotexAM) RouteGetSilence(ctx *models.ReqContext, silenceID string) response.Response {
 	return am.withAMReq(
 		ctx,
 		http.MethodGet,
 		"silence",
-		[]string{web.Params(ctx.Req)[":SilenceId"]},
+		[]string{silenceID},
 		nil,
 		jsonExtractor(&apimodels.GettableSilence{}),
 		nil,
