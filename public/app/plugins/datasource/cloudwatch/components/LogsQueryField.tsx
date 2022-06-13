@@ -38,6 +38,7 @@ export interface CloudWatchLogsQueryFieldProps
   ExtraFieldElement?: ReactNode;
   exploreId: ExploreId;
   allowCustomValue?: boolean;
+  query: CloudWatchLogsQuery;
 }
 
 const containerClass = css`
@@ -65,7 +66,7 @@ interface State {
     | undefined;
 }
 
-export class CloudWatchLogsQueryField extends React.PureComponent<CloudWatchLogsQueryFieldProps, State> {
+export const CloudWatchLogsQueryField = (props: CloudWatchLogsQueryFieldProps) => {
   state: State = {
     selectedLogGroups:
       (this.props.query as CloudWatchLogsQuery).logGroupNames?.map((logGroup) => ({
