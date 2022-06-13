@@ -50,22 +50,6 @@ const rowGap = css`
   gap: 3px;
 `;
 
-interface State {
-  selectedLogGroups: Array<SelectableValue<string>>;
-  availableLogGroups: Array<SelectableValue<string>>;
-  loadingLogGroups: boolean;
-  invalidLogGroups: boolean;
-  hint:
-    | {
-        message: string;
-        fix: {
-          label: string;
-          action: () => void;
-        };
-      }
-    | undefined;
-}
-
 export const CloudWatchLogsQueryField = (props: CloudWatchLogsQueryFieldProps) => {
   state: State = {
     selectedLogGroups:
