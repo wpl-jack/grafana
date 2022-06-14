@@ -1,16 +1,20 @@
-import { css } from '@emotion/css';
-import { unionBy } from 'lodash';
-import React, { ReactNode, useState } from 'react';
+import {css} from '@emotion/css';
+import {unionBy, debounce} from 'lodash';
+import React, {ReactNode, useState} from 'react';
 
-import { AbsoluteTimeRange, QueryEditorProps, SelectableValue } from '@grafana/data';
-import { LegacyForms, MultiSelect } from '@grafana/ui';
-import { ExploreId } from 'app/types';
+import {AbsoluteTimeRange, QueryEditorProps, SelectableValue} from '@grafana/data';
+import {LegacyForms, MultiSelect} from '@grafana/ui';
+import {InputActionMeta} from '@grafana/ui/src/components/Select/types';
+import {notifyApp} from 'app/core/actions';
+import {createErrorNotification} from 'app/core/copy/appNotification';
+import {dispatch} from 'app/store/store';
+import {ExploreId} from 'app/types';
 
 // Utils & Services
 // dom also includes Element polyfills
-import { CloudWatchDatasource } from '../datasource';
-import { CloudWatchJsonData, CloudWatchLogsQuery, CloudWatchQuery } from '../types';
-import { appendTemplateVariables } from '../utils/utils';
+import {CloudWatchDatasource} from '../datasource';
+import {CloudWatchJsonData, CloudWatchLogsQuery, CloudWatchQuery} from '../types';
+import {appendTemplateVariables} from '../utils/utils';
 
 import QueryHeader from './QueryHeader';
 
@@ -22,11 +26,11 @@ export interface CloudWatchLogsQueryFieldProps
   exploreId: ExploreId;
   allowCustomValue?: boolean;
 }
-//
-// const containerClass = css`
-//   flex-grow: 1;
-//   min-height: 35px;
-// `;
+
+const containerClass = css`
+  flex-grow: 1;
+  min-height: 35px;
+`;
 
 const rowGap = css`
   gap: 3px;
@@ -41,12 +45,86 @@ export const CloudWatchLogsQueryField = (props: CloudWatchLogsQueryFieldProps) =
       label: logGroup,
     })) ?? []
   );
+  const [invalidLogGroups, setInvalidLogGroups] = useState(false);
+  const [loadingLogGroups, setLoadingLogGroups] = useState(false);
 
   const onChange = (query: CloudWatchQuery) => {
     const { onChange, onRunQuery } = props;
     onChange(query);
     onRunQuery();
   };
+
+  const onLogGroupSearchDebounced = (searchTerm: string, region: string, actionMeta: InputActionMeta) => {
+    debounce(onLogGroupSearch, 300)
+  };
+
+  const fetchLogGroupOptions = async (region: string, logGroupNamePrefix?: string) => {
+    try {
+      const logGroups: string[] = await props.datasource.describeLogGroups({
+        refId: props.query.refId,
+        region,
+        logGroupNamePrefix,
+      });
+
+      return logGroups.map((logGroup) => ({
+        value: logGroup,
+        label: logGroup,
+      }));
+    } catch (err) {
+      let errMessage = 'unknown error';
+      if (typeof err !== 'string') {
+        try {
+          errMessage = JSON.stringify(err);
+        } catch (e) {}
+      } else {
+        errMessage = err;
+      }
+      dispatch(notifyApp(createErrorNotification(errMessage)));
+      return [];
+    }
+  };
+
+  const onLogGroupSearch = (searchTerm: string, region: string, actionMeta: InputActionMeta) => {
+    if (actionMeta.action !== 'input-change') {
+      return Promise.resolve();
+    }
+
+    // No need to fetch matching log groups if the search term isn't valid
+    // This is also useful for preventing searches when a user is typing out a log group with template vars
+    // See https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_LogGroup.html for the source of the pattern below
+    const logGroupNamePattern = /^[\.\-_/#A-Za-z0-9]+$/;
+    if (!logGroupNamePattern.test(searchTerm)) {
+      return Promise.resolve();
+    }
+
+    setLoadingLogGroups(true);
+
+    return fetchLogGroupOptions(region, searchTerm)
+      .then((matchingLogGroups) => {
+        setAvailableLogGroups(unionBy(availableLogGroups, matchingLogGroups, 'value'));
+      })
+      .finally(() => {
+        setLoadingLogGroups(true);
+      });
+  };
+
+  const changeSelectedLogGroups = (v: Array<SelectableValue<string>>) => {
+    setSelectedLogGroups(v)
+
+    const { onChange, query } = props;
+    onChange?.({
+      ...(query as CloudWatchLogsQuery),
+      logGroupNames: selectedLogGroups.map((logGroupName) => logGroupName.value!) ?? [],
+    });
+  };
+
+  const setCustomLogGroups = (v: string) => {
+    const customLogGroup: SelectableValue<string> = { value: v, label: v };
+    const combinedGroups = [...selectedLogGroups, customLogGroup];
+    changeSelectedLogGroups(combinedGroups);
+  };
+
+  const MAX_LOG_GROUPS = 20;
 
   return (
     <>
@@ -69,14 +147,12 @@ export const CloudWatchLogsQueryField = (props: CloudWatchLogsQueryFieldProps) =
               options={appendTemplateVariables(datasource, unionBy(availableLogGroups, selectedLogGroups, 'value'))}
               value={selectedLogGroups}
               onChange={(v) => {
-                setSelectedLogGroups(v);
+                changeSelectedLogGroups(v);
               }}
               onCreateOption={(v) => {
-                const customLogGroup: SelectableValue<string> = { value: v, label: v };
-                const selectedLogGroups = [...this.state.selectedLogGroups, customLogGroup];
-                setSelectedLogGroups(selectedLogGroups);
+                setCustomLogGroups(v);
               }}
-              onBlur={this.props.onRunQuery}
+              onBlur={props.onRunQuery}
               className={containerClass}
               closeMenuOnSelect={false}
               isClearable={true}
@@ -86,9 +162,9 @@ export const CloudWatchLogsQueryField = (props: CloudWatchLogsQueryFieldProps) =
               maxVisibleValues={4}
               noOptionsMessage="No log groups available"
               isLoading={loadingLogGroups}
-              onOpenMenu={this.onOpenLogGroupMenu}
+              onOpenMenu={() => {setInvalidLogGroups(false)}}
               onInputChange={(value, actionMeta) => {
-                this.onLogGroupSearchDebounced(value, query.region, actionMeta);
+                onLogGroupSearchDebounced(value, query.region, actionMeta);
               }}
             />
           }
