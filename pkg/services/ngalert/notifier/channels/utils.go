@@ -38,7 +38,7 @@ const (
 var (
 	// Provides current time. Can be overwritten in tests.
 	timeNow              = time.Now
-	ErrImagesUnavailable = errors.New("alert screenshots are unavailable")
+	ErrImagesUnavailable = errors.New("alert images are unavailable")
 )
 
 // For each alert, attempts to load the models.Image for an image token
@@ -109,7 +109,7 @@ func openImage(path string) (io.ReadCloser, error) {
 }
 
 func getTokenFromAnnotations(annotations model.LabelSet) string {
-	if value, ok := annotations[models.ScreenshotTokenAnnotation]; ok {
+	if value, ok := annotations[models.ImageTokenAnnotation]; ok {
 		return string(value)
 	}
 	return ""

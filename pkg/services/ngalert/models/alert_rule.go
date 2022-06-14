@@ -86,7 +86,7 @@ const (
 
 	// This isn't a hard-coded secret token, hence the nolint.
 	//nolint:gosec
-	ScreenshotTokenAnnotation = "__alertScreenshotToken__"
+	ImageTokenAnnotation = "__alertImageToken__"
 )
 
 var (
@@ -96,9 +96,9 @@ var (
 		NamespaceUIDLabel: {},
 	}
 	InternalAnnotationNameSet = map[string]struct{}{
-		DashboardUIDAnnotation:    {},
-		PanelIDAnnotation:         {},
-		ScreenshotTokenAnnotation: {},
+		DashboardUIDAnnotation: {},
+		PanelIDAnnotation:      {},
+		ImageTokenAnnotation:   {},
 	}
 )
 
