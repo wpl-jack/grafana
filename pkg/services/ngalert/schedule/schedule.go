@@ -669,7 +669,7 @@ func (sch *schedule) ruleRoutine(grafanaCtx context.Context, key models.AlertRul
 func (sch *schedule) saveAlertStates(ctx context.Context, states []*state.State) {
 	sch.log.Debug("saving alert states", "count", len(states))
 	for _, s := range states {
-		if s.Stale {
+		if s.StateReason == models.StateReasonMissingSeries {
 			continue
 		}
 		cmd := models.SaveAlertInstanceCommand{
