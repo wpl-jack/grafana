@@ -81,7 +81,9 @@ const (
 	NamespaceUIDLabel = "__alert_rule_namespace_uid__"
 
 	// Annotations are actually a set of labels, so technically this is the label name of an annotation.
-	StateReasonAnnotation = "StateReason"
+	// Annotations with prefix 'g_' are system-owned annotations that are included to the notifications delivered to user
+
+	StateReasonAnnotation = "g_state_reason"
 
 	DashboardUIDAnnotation = "__dashboardUid__"
 	PanelIDAnnotation      = "__panelId__"
