@@ -23,9 +23,9 @@ type CountingImageService struct {
 	Called int
 }
 
-func (c *CountingImageService) NewImage(_ context.Context, _ *ngmodels.AlertRule) (*store.Image, error) {
+func (c *CountingImageService) NewImage(_ context.Context, _ *ngmodels.AlertRule) (*ngmodels.Image, error) {
 	c.Called += 1
-	return &store.Image{
+	return &ngmodels.Image{
 		Token: fmt.Sprint(rand.Int()),
 	}, nil
 }
@@ -42,7 +42,7 @@ func Test_maybeNewImage(t *testing.T) {
 			true,
 			&State{
 				State: eval.Alerting,
-				Image: &store.Image{
+				Image: &ngmodels.Image{
 					Token: "erase me",
 				},
 			},
@@ -62,7 +62,7 @@ func Test_maybeNewImage(t *testing.T) {
 			&State{
 				Resolved: true,
 				State:    eval.Normal,
-				Image: &store.Image{
+				Image: &ngmodels.Image{
 					Token: "abcd",
 				},
 			},
@@ -73,7 +73,7 @@ func Test_maybeNewImage(t *testing.T) {
 			false,
 			&State{
 				State: eval.Alerting,
-				Image: &store.Image{
+				Image: &ngmodels.Image{
 					Token: "already set",
 				},
 			},
