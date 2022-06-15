@@ -84,16 +84,28 @@ func (hs *HTTPServer) QueryPublicDashboard(c *models.ReqContext) response.Respon
 		return response.Error(http.StatusBadRequest, "invalid panel ID", err)
 	}
 
+	dashboard, err := hs.dashboardService.GetPublicDashboard(c.Req.Context(), web.Params(c.Req)[":uid"])
+	if err != nil {
+		return response.Error(http.StatusInternalServerError, "could not fetch dashboard", err)
+	}
+
+	publicDashboard, err := hs.dashboardService.GetPublicDashboardConfig(c.Req.Context(), dashboard.OrgId, dashboard.Uid)
+	if err != nil {
+		return response.Error(http.StatusInternalServerError, "could not fetch public dashboard", err)
+	}
+
 	reqDTO, err := hs.dashboardService.BuildPublicDashboardMetricRequest(
 		c.Req.Context(),
-		web.Params(c.Req)[":uid"],
+		dashboard,
+		publicDashboard,
 		panelId,
 	)
 	if err != nil {
 		return handleDashboardErr(http.StatusInternalServerError, "Failed to get queries for public dashboard", err)
 	}
 
-	resp, err := hs.queryDataService.QueryDataMultipleSources(c.Req.Context(), nil, c.SkipCache, reqDTO, true)
+	anonymousUser := &models.SignedInUser{OrgId: dashboard.OrgId}
+	resp, err := hs.queryDataService.QueryDataMultipleSources(c.Req.Context(), anonymousUser, c.SkipCache, reqDTO, true)
 
 	if err != nil {
 		return hs.handleQueryMetricsError(err)
