@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 import { FieldConfigEditorProps, SelectFieldConfigSettings, SelectableValue } from '@grafana/data';
 
@@ -11,7 +11,7 @@ interface State<T> {
 
 type Props<T> = FieldConfigEditorProps<T, SelectFieldConfigSettings<T>>;
 
-export class SelectValueEditor<T> extends React.PureComponent<Props<T>, State<T>> {
+export class SelectValueEditor<T> extends PureComponent<Props<T>, State<T>> {
   state: State<T> = {
     isLoading: true,
     options: [],

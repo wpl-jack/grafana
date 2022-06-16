@@ -1,5 +1,5 @@
 import { css } from '@emotion/css';
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 import { FieldConfigEditorProps, StringFieldConfigSettings, GrafanaTheme } from '@grafana/data';
 
@@ -13,7 +13,7 @@ interface State {
   showAdd: boolean;
 }
 
-export class StringArrayEditor extends React.PureComponent<Props, State> {
+export class StringArrayEditor extends PureComponent<Props, State> {
   state = {
     showAdd: false,
   };

@@ -37,8 +37,6 @@
     "not IE 11"
   ],
   "dependencies": {
-    "@emotion/css": "11.9.0",
-    "@emotion/react": "11.9.0",
     "@grafana/aws-sdk": "0.0.36",
     "@grafana/data": "9.0.0-pre",
     "@grafana/e2e-selectors": "9.0.0-pre",
@@ -73,12 +71,10 @@
     "rc-drawer": "4.4.3",
     "rc-slider": "9.7.5",
     "rc-time-picker": "^3.7.3",
-    "react": "17.0.2",
     "react-beautiful-dnd": "13.1.0",
     "react-calendar": "3.7.0",
     "react-colorful": "5.5.1",
     "react-custom-scrollbars-2": "4.4.0",
-    "react-dom": "17.0.2",
     "react-dropzone": "12.0.4",
     "react-highlight-words": "0.18.0",
     "react-hook-form": "7.5.3",
@@ -99,6 +95,12 @@
     "tslib": "2.4.0",
     "uplot": "1.6.21",
     "uuid": "8.3.2"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "@emotion/css": "^11.9.0",
+    "@emotion/react": "^11.9.0"
   },
   "devDependencies": {
     "@babel/core": "7.18.2",
@@ -184,6 +186,5 @@
     "typescript": "4.6.4",
     "webpack": "5.72.1",
     "webpack-filter-warnings-plugin": "1.2.1"
-  },
-  "types": "src/index.ts"
+  }
 }
