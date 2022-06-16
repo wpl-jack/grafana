@@ -221,7 +221,7 @@ export function getRulerClient(rulerConfig: RulerDataSourceConfig): RulerClient 
       if (!isGrafanaRulerRule(rule)) {
         return rule;
       }
-      if (rule.grafana_alert.uid == existingRule.rule.grafana_alert.uid) {
+      if (rule.grafana_alert.uid === existingRule.rule.grafana_alert.uid) {
         return newRule;
       }
       return rule;
