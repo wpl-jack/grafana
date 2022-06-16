@@ -121,7 +121,7 @@ def pr_pipelines(edition):
     ]
     build_steps = [
         enterprise_downstream_step(edition=edition, ver_mode=ver_mode),
-        build_backend_step(edition=edition, ver_mode=ver_mode, variants=variants),
+        build_backend_step(edition=edition, ver_mode=ver_mode),
         build_frontend_step(edition=edition, ver_mode=ver_mode),
         build_frontend_package_step(edition=edition, ver_mode=ver_mode),
         build_plugins_step(edition=edition),
