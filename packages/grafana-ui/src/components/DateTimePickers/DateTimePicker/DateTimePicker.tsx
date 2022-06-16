@@ -5,8 +5,14 @@ import { useMedia } from 'react-use';
 
 import { dateTimeFormat, DateTime, dateTime, GrafanaTheme2, isDateTime } from '@grafana/data';
 
-import { Button, ClickOutsideWrapper, HorizontalGroup, Icon, InlineField, Input, Portal } from '../..';
 import { useStyles2, useTheme2 } from '../../../themes';
+import { Button } from '../../Button/Button';
+import { ClickOutsideWrapper } from '../../ClickOutsideWrapper/ClickOutsideWrapper';
+import { InlineField } from '../../Forms/InlineField';
+import { Icon } from '../../Icon/Icon';
+import { Input } from '../../Input/Input';
+import { HorizontalGroup } from '../../Layout/Layout';
+import { Portal } from '../../Portal/Portal';
 import { TimeOfDayPicker } from '../TimeOfDayPicker';
 import { getBodyStyles } from '../TimeRangePicker/CalendarBody';
 import { getStyles as getCalendarStyles } from '../TimeRangePicker/TimePickerCalendar';

@@ -9,15 +9,7 @@ import { GrafanaTheme2 } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
 import { Editor, Plugin } from '@grafana/slate-react';
 
-import {
-  makeValue,
-  SCHEMA,
-  CompletionItemGroup,
-  TypeaheadOutput,
-  TypeaheadInput,
-  SuggestionsState,
-  Themeable2,
-} from '../..';
+import { SCHEMA, CompletionItemGroup, TypeaheadOutput, TypeaheadInput, SuggestionsState } from '../..';
 import {
   ClearPlugin,
   NewlinePlugin,
@@ -29,6 +21,8 @@ import {
 } from '../../slate-plugins';
 import { withTheme2 } from '../../themes';
 import { getFocusStyles } from '../../themes/mixins';
+import { Themeable2 } from '../../types';
+import { makeValue } from '../../utils';
 
 export interface QueryFieldProps extends Themeable2 {
   additionalPlugins?: Plugin[];

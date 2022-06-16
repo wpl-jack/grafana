@@ -3875,6 +3875,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@emotion/cache@npm:^11.9.3":
+  version: 11.9.3
+  resolution: "@emotion/cache@npm:11.9.3"
+  dependencies:
+    "@emotion/memoize": ^0.7.4
+    "@emotion/sheet": ^1.1.1
+    "@emotion/utils": ^1.0.0
+    "@emotion/weak-memoize": ^0.2.5
+    stylis: 4.0.13
+  checksum: 6e0aab2fa5b9b6b0b9bf66b5328ed44265c23ced16b46c13d2602c3497fabd95299f6cf2c87cbc02b630452aa3cff599c194c538125d744aa135824129698ccc
+  languageName: node
+  linkType: hard
+
 "@emotion/core@npm:^10.0.9, @emotion/core@npm:^10.1.1":
   version: 10.3.1
   resolution: "@emotion/core@npm:10.3.1"
@@ -3891,7 +3904,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/css@npm:11.9.0":
+"@emotion/css@npm:11.9.0, @emotion/css@npm:^11.9.0":
   version: 11.9.0
   resolution: "@emotion/css@npm:11.9.0"
   dependencies:
@@ -3982,6 +3995,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@emotion/react@npm:^11.9.0":
+  version: 11.9.3
+  resolution: "@emotion/react@npm:11.9.3"
+  dependencies:
+    "@babel/runtime": ^7.13.10
+    "@emotion/babel-plugin": ^11.7.1
+    "@emotion/cache": ^11.9.3
+    "@emotion/serialize": ^1.0.4
+    "@emotion/utils": ^1.1.0
+    "@emotion/weak-memoize": ^0.2.5
+    hoist-non-react-statics: ^3.3.1
+  peerDependencies:
+    "@babel/core": ^7.0.0
+    react: ">=16.8.0"
+  peerDependenciesMeta:
+    "@babel/core":
+      optional: true
+    "@types/react":
+      optional: true
+  checksum: 19bc7205e85e87cadebbe5a926d45103b836af70ab6972ea4c333c8dd01b463fc9646d4e4097a36f145a05dd4bc388739667437b990f8cf7f7f925f9610d1aa8
+  languageName: node
+  linkType: hard
+
 "@emotion/serialize@npm:^0.11.15, @emotion/serialize@npm:^0.11.16":
   version: 0.11.16
   resolution: "@emotion/serialize@npm:0.11.16"
@@ -4021,6 +4057,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@emotion/serialize@npm:^1.0.4":
+  version: 1.0.4
+  resolution: "@emotion/serialize@npm:1.0.4"
+  dependencies:
+    "@emotion/hash": ^0.8.0
+    "@emotion/memoize": ^0.7.4
+    "@emotion/unitless": ^0.7.5
+    "@emotion/utils": ^1.0.0
+    csstype: ^3.0.2
+  checksum: e8cc342056734e176ea837fe44035126dea174962db40852a7ced499d258c0056b0fd3c298743c446f9ba0f2647cb42dfb623b8e5783c265deb9eb20138d68e7
+  languageName: node
+  linkType: hard
+
 "@emotion/sheet@npm:0.9.4":
   version: 0.9.4
   resolution: "@emotion/sheet@npm:0.9.4"
@@ -4039,6 +4088,13 @@ __metadata:
   version: 1.1.0
   resolution: "@emotion/sheet@npm:1.1.0"
   checksum: a4b74e16a8fea1157413efe4904f5f679d724323cb605d66d20a0b98744422f5d411fca927ceb52e4de454a0a819c5273ca9496db9f011b4ecd17b9f1b212007
+  languageName: node
+  linkType: hard
+
+"@emotion/sheet@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "@emotion/sheet@npm:1.1.1"
+  checksum: b916ac665735ef6dfda26b09f2d3493789d432d649733db9da18c4db0115e7fdadeb8d45f6490320248916bb13d978bba74c914b711ac96f659b76a5e52d5cd2
   languageName: node
   linkType: hard
 
@@ -4270,9 +4326,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@grafana-plugins/input-datasource@workspace:plugins-bundled/internal/input-datasource"
   dependencies:
-    "@grafana/data": 9.0.0-pre
-    "@grafana/toolkit": 9.0.0-pre
-    "@grafana/ui": 9.0.0-pre
+    "@grafana/data": 9.0.0-federated02
+    "@grafana/toolkit": 9.0.0-federated02
+    "@grafana/ui": 9.0.0-federated02
     "@types/jest": 26.0.15
     "@types/lodash": 4.14.149
     "@types/react": 17.0.30
@@ -4310,12 +4366,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@grafana/data@9.0.0-pre, @grafana/data@workspace:*, @grafana/data@workspace:packages/grafana-data":
+"@grafana/data@9.0.0-federated02, @grafana/data@workspace:*, @grafana/data@workspace:packages/grafana-data":
   version: 0.0.0-use.local
   resolution: "@grafana/data@workspace:packages/grafana-data"
   dependencies:
     "@braintree/sanitize-url": 6.0.0
-    "@grafana/schema": 9.0.0-pre
+    "@grafana/schema": 9.0.0-federated02
     "@grafana/tsconfig": ^1.2.0-rc1
     "@rollup/plugin-json": 4.1.0
     "@rollup/plugin-node-resolve": 13.3.0
@@ -4349,8 +4405,6 @@ __metadata:
     moment-timezone: 0.5.34
     ol: 6.14.1
     papaparse: 5.3.2
-    react: 17.0.2
-    react-dom: 17.0.2
     react-test-renderer: 17.0.2
     regenerator-runtime: 0.13.9
     rimraf: 3.0.2
@@ -4364,10 +4418,13 @@ __metadata:
     typescript: 4.6.4
     uplot: 1.6.21
     xss: 1.0.11
+  peerDependencies:
+    react: 17.0.2
+    react-dom: 17.0.2
   languageName: unknown
   linkType: soft
 
-"@grafana/e2e-selectors@9.0.0-pre, @grafana/e2e-selectors@workspace:*, @grafana/e2e-selectors@workspace:packages/grafana-e2e-selectors":
+"@grafana/e2e-selectors@9.0.0-federated02, @grafana/e2e-selectors@workspace:*, @grafana/e2e-selectors@workspace:packages/grafana-e2e-selectors":
   version: 0.0.0-use.local
   resolution: "@grafana/e2e-selectors@workspace:packages/grafana-e2e-selectors"
   dependencies:
@@ -4391,7 +4448,7 @@ __metadata:
     "@babel/core": 7.18.2
     "@babel/preset-env": 7.18.2
     "@cypress/webpack-preprocessor": 5.12.0
-    "@grafana/e2e-selectors": 9.0.0-pre
+    "@grafana/e2e-selectors": 9.0.0-federated02
     "@grafana/tsconfig": ^1.2.0-rc1
     "@mochajs/json-file-reporter": ^1.2.0
     "@rollup/plugin-commonjs": 22.0.0
@@ -4480,10 +4537,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@grafana/runtime@workspace:packages/grafana-runtime"
   dependencies:
-    "@grafana/data": 9.0.0-pre
-    "@grafana/e2e-selectors": 9.0.0-pre
+    "@grafana/data": 9.0.0-federated02
+    "@grafana/e2e-selectors": 9.0.0-federated02
     "@grafana/tsconfig": ^1.2.0-rc1
-    "@grafana/ui": 9.0.0-pre
+    "@grafana/ui": 9.0.0-federated02
     "@rollup/plugin-node-resolve": 13.3.0
     "@sentry/browser": 6.19.7
     "@testing-library/dom": 8.13.0
@@ -4513,7 +4570,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@grafana/schema@9.0.0-pre, @grafana/schema@workspace:*, @grafana/schema@workspace:packages/grafana-schema":
+"@grafana/schema@9.0.0-federated02, @grafana/schema@workspace:*, @grafana/schema@workspace:packages/grafana-schema":
   version: 0.0.0-use.local
   resolution: "@grafana/schema@workspace:packages/grafana-schema"
   dependencies:
@@ -4558,7 +4615,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@grafana/toolkit@9.0.0-pre, @grafana/toolkit@workspace:*, @grafana/toolkit@workspace:packages/grafana-toolkit":
+"@grafana/toolkit@9.0.0-federated02, @grafana/toolkit@workspace:*, @grafana/toolkit@workspace:packages/grafana-toolkit":
   version: 0.0.0-use.local
   resolution: "@grafana/toolkit@workspace:packages/grafana-toolkit"
   dependencies:
@@ -4574,10 +4631,10 @@ __metadata:
     "@babel/preset-env": ^7.16.11
     "@babel/preset-react": ^7.16.7
     "@babel/preset-typescript": ^7.16.7
-    "@grafana/data": 9.0.0-pre
+    "@grafana/data": 9.0.0-federated02
     "@grafana/eslint-config": ^3.0.0
     "@grafana/tsconfig": ^1.2.0-rc1
-    "@grafana/ui": 9.0.0-pre
+    "@grafana/ui": 9.0.0-federated02
     "@jest/core": 27.5.1
     "@types/command-exists": ^1.2.0
     "@types/eslint": 8.4.1
@@ -4660,17 +4717,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@grafana/ui@9.0.0-pre, @grafana/ui@workspace:*, @grafana/ui@workspace:packages/grafana-ui":
+"@grafana/ui@9.0.0-federated02, @grafana/ui@workspace:*, @grafana/ui@workspace:packages/grafana-ui":
   version: 0.0.0-use.local
   resolution: "@grafana/ui@workspace:packages/grafana-ui"
   dependencies:
     "@babel/core": 7.18.2
-    "@emotion/css": 11.9.0
-    "@emotion/react": 11.9.0
+    "@emotion/css": ^11.9.0
+    "@emotion/react": ^11.9.0
     "@grafana/aws-sdk": 0.0.36
-    "@grafana/data": 9.0.0-pre
-    "@grafana/e2e-selectors": 9.0.0-pre
-    "@grafana/schema": 9.0.0-pre
+    "@grafana/data": 9.0.0-federated02
+    "@grafana/e2e-selectors": 9.0.0-federated02
+    "@grafana/schema": 9.0.0-federated02
     "@grafana/slate-react": 0.22.10-grafana
     "@grafana/tsconfig": ^1.2.0-rc1
     "@mdx-js/react": 1.6.22
@@ -4768,13 +4825,13 @@ __metadata:
     rc-drawer: 4.4.3
     rc-slider: 9.7.5
     rc-time-picker: ^3.7.3
-    react: 17.0.2
+    react: ^17.0.2
     react-beautiful-dnd: 13.1.0
     react-calendar: 3.7.0
     react-colorful: 5.5.1
     react-custom-scrollbars-2: 4.4.0
     react-docgen-typescript-loader: 3.7.2
-    react-dom: 17.0.2
+    react-dom: ^17.0.2
     react-dropzone: 12.0.4
     react-highlight-words: 0.18.0
     react-hook-form: 7.5.3
@@ -4793,6 +4850,7 @@ __metadata:
     rollup: 2.74.1
     rollup-plugin-dts: 4.2.1
     rollup-plugin-esbuild: 4.9.1
+    rollup-plugin-node-externals: 4.0.0
     rollup-plugin-svg-import: ^1.6.0
     rxjs: 7.5.5
     sass-loader: 13.0.0
@@ -4809,6 +4867,11 @@ __metadata:
     uuid: 8.3.2
     webpack: 5.72.1
     webpack-filter-warnings-plugin: 1.2.1
+  peerDependencies:
+    "@emotion/css": ^11.9.0
+    "@emotion/react": ^11.9.0
+    react: ^17.0.2
+    react-dom: ^17.0.2
   languageName: unknown
   linkType: soft
 
@@ -4906,10 +4969,10 @@ __metadata:
   resolution: "@jaegertracing/jaeger-ui-components@workspace:packages/jaeger-ui-components"
   dependencies:
     "@emotion/css": 11.9.0
-    "@grafana/data": 9.0.0-pre
-    "@grafana/e2e-selectors": 9.0.0-pre
+    "@grafana/data": 9.0.0-federated02
+    "@grafana/e2e-selectors": 9.0.0-federated02
     "@grafana/tsconfig": ^1.2.0-rc1
-    "@grafana/ui": 9.0.0-pre
+    "@grafana/ui": 9.0.0-federated02
     "@testing-library/jest-dom": 5.16.4
     "@testing-library/react": 12.1.4
     "@testing-library/user-event": 14.2.0
@@ -30816,7 +30879,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:17.0.2":
+"react-dom@npm:17.0.2, react-dom@npm:^17.0.2":
   version: 17.0.2
   resolution: "react-dom@npm:17.0.2"
   dependencies:
@@ -31543,7 +31606,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:17.0.2":
+"react@npm:17.0.2, react@npm:^17.0.2":
   version: 17.0.2
   resolution: "react@npm:17.0.2"
   dependencies:
@@ -32534,6 +32597,17 @@ __metadata:
     esbuild: ">=0.10.1"
     rollup: ^1.20.0 || ^2.0.0
   checksum: 9b74a7ccff6e1487956c2f3f79e302e96b97036e445f2e56749decccda8733e49354fb1e01698420909fc0c817d535771bdbbb8beb046d961af3e08f005741d8
+  languageName: node
+  linkType: hard
+
+"rollup-plugin-node-externals@npm:4.0.0":
+  version: 4.0.0
+  resolution: "rollup-plugin-node-externals@npm:4.0.0"
+  dependencies:
+    find-up: ^5.0.0
+  peerDependencies:
+    rollup: ^2.60.0
+  checksum: 8f4e7faed64332f69f3751b0eb2e4786c05653275c141536e62a69d1c1335d6c9e1b82cf53d24d4511b22c50e9acece65d9217669321c0a87bed4c44ae81789e
   languageName: node
   linkType: hard
 

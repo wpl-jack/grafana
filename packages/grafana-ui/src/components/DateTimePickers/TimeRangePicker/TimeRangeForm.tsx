@@ -15,11 +15,12 @@ import {
 } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
 
-import { Icon, Tooltip } from '../..';
-import { useStyles2 } from '../../..';
+import { useStyles2 } from '../../../themes';
 import { Button } from '../../Button';
 import { Field } from '../../Forms/Field';
+import { Icon } from '../../Icon/Icon';
 import { Input } from '../../Input/Input';
+import { Tooltip } from '../../Tooltip';
 
 import TimePickerCalendar from './TimePickerCalendar';
 
