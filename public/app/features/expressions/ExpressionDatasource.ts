@@ -93,6 +93,7 @@ export const instanceSettings: DataSourceInstanceSettings = {
       version: '',
     },
   },
+  correlations: [],
   jsonData: {},
 };
 

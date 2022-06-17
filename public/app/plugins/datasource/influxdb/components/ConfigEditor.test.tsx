@@ -36,6 +36,7 @@ const setup = (propOverrides?: object) => {
         httpMode: 'POST',
         timeInterval: '4',
       },
+      correlations: [],
       secureJsonFields: {},
       version: 1,
       readOnly: false,

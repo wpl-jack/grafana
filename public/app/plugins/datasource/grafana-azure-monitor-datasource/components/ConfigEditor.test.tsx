@@ -24,6 +24,7 @@ describe('AppInsights ConfigEditor', () => {
     secureJsonFields: {},
     version: 1,
     readOnly: false,
+    correlations: [],
   };
 
   const jsonData = {

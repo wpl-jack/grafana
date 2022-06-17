@@ -160,6 +160,7 @@ export function getDataSourceLoadingNav(pageName: string): NavModel {
       uid: 'x',
       isDefault: false,
       jsonData: { authType: 'credentials', defaultRegion: 'eu-west-2' },
+      correlations: [],
       name: 'Loading',
       orgId: 1,
       readOnly: false,

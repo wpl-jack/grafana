@@ -44,6 +44,7 @@ const datasource = new LokiDatasource(
     url: '',
     jsonData: {},
     meta: {} as any,
+    correlations: [],
   },
   undefined,
   undefined

@@ -44,5 +44,6 @@ export const getMockDataSource = (): DataSourceSettings => {
     url: '',
     user: '',
     secureJsonFields: {},
+    correlations: [],
   };
 };

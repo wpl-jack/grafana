@@ -20,4 +20,5 @@ export const createMockInstanceSetttings = (): AzureDataSourceInstanceSettings =
     clientId: 'def-456',
     subscriptionId: 'ghi-789',
   },
+  correlations: [],
 });

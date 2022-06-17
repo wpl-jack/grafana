@@ -41,6 +41,7 @@ const mockRuleSourceByName = () => {
     meta: {} as PluginMeta,
     jsonData: {} as DataSourceJsonData,
     access: 'proxy',
+    correlations: [],
   });
 };
 
@@ -99,6 +100,7 @@ const mockedRules: CombinedRule[] = [
         meta: {} as PluginMeta,
         jsonData: {} as DataSourceJsonData,
         access: 'proxy',
+        correlations: [],
       },
     },
   },
@@ -128,6 +130,7 @@ const mockedRules: CombinedRule[] = [
         meta: {} as PluginMeta,
         jsonData: {} as DataSourceJsonData,
         access: 'proxy',
+        correlations: [],
       },
     },
   },

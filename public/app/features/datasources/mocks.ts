@@ -17,6 +17,7 @@ export function createDatasourceSettings<T>(jsonData: T): DataSourceSettings<T> 
     basicAuthUser: '',
     isDefault: false,
     jsonData,
+    correlations: [],
     readOnly: false,
     withCredentials: false,
     secureJsonFields: {},

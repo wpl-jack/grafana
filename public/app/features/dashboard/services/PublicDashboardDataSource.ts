@@ -13,6 +13,7 @@ export class PublicDashboardDataSource extends DataSourceApi<any> {
       uid: '1',
       jsonData: {},
       access: 'proxy',
+      correlations: [],
     });
   }
 

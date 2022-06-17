@@ -47,6 +47,7 @@ export function mockDataSource<T extends DataSourceJsonData = DataSourceJsonData
     name: `Prometheus-${id}`,
     access: 'proxy',
     jsonData: {} as T,
+    correlations: [],
     meta: {
       info: {
         logos: {

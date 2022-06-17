@@ -40,6 +40,7 @@ const defaultSettings: DataSourceInstanceSettings = {
     baseUrl: '',
   },
   jsonData: {},
+  correlations: [],
 };
 
 describe('transformTraceList()', () => {

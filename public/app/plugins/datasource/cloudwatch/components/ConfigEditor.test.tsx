@@ -52,6 +52,7 @@ const setup = (propOverrides?: object) => {
         defaultRegion: 'us-east-2',
         timeField: '@timestamp',
       },
+      correlations: [],
       secureJsonData: {
         secretKey: '',
         accessKey: '',

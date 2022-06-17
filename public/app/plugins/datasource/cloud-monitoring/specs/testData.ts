@@ -77,4 +77,5 @@ export const newMockDatasource = () =>
         links: [],
       },
     },
+    correlations: [],
   });

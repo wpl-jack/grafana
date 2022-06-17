@@ -119,6 +119,7 @@ function makeDatasourceSetup({ name = 'loki', id = 1 }: { name?: string; id?: nu
       meta,
       access: 'proxy',
       jsonData: {},
+      correlations: [],
     },
     api: {
       components: {

@@ -189,6 +189,7 @@ const defaultSettings: DataSourceInstanceSettings<JaegerJsonData> = {
       enabled: true,
     },
   },
+  correlations: [],
 };
 
 const defaultQuery: DataQueryRequest<JaegerQuery> = {

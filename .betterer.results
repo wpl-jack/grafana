@@ -140,7 +140,7 @@ exports[`no enzyme tests`] = {
     "public/app/features/org/OrgDetailsPage.test.tsx:3835042085": [
       [0, 19, 13, "RegExp match", "2409514259"]
     ],
-    "public/app/plugins/datasource/cloudwatch/components/ConfigEditor.test.tsx:227258837": [
+    "public/app/plugins/datasource/cloudwatch/components/ConfigEditor.test.tsx:2184343844": [
       [0, 19, 13, "RegExp match", "2409514259"]
     ],
     "public/app/plugins/datasource/cloudwatch/components/LogsQueryField.test.tsx:1501504663": [
@@ -152,7 +152,7 @@ exports[`no enzyme tests`] = {
     "public/app/plugins/datasource/elasticsearch/configuration/DataLinks.test.tsx:248699332": [
       [0, 17, 13, "RegExp match", "2409514259"]
     ],
-    "public/app/plugins/datasource/influxdb/components/ConfigEditor.test.tsx:57753101": [
+    "public/app/plugins/datasource/influxdb/components/ConfigEditor.test.tsx:1031594524": [
       [0, 19, 13, "RegExp match", "2409514259"]
     ],
     "public/app/plugins/datasource/loki/components/LokiExploreQueryEditor.test.tsx:1488067923": [
