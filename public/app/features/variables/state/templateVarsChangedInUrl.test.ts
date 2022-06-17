@@ -114,6 +114,7 @@ describe('templateVarsChangedInUrl', () => {
         expect(setValueFromUrlMock).toHaveBeenCalledWith(variable, 'B');
         expect(templateVariableValueUpdatedMock).toHaveBeenCalledTimes(1);
         expect(startRefreshMock).toHaveBeenCalledTimes(1);
+        expect(eventsMock.publish).toHaveBeenCalledTimes(1);
       });
 
       describe('but the values in url query map were removed', () => {
